@@ -1,0 +1,64 @@
+rules_version = '2';
+
+// ============================================================================
+// Manual de Donos — Empresários do Rio
+//
+// Nada neste bucket é público. As fotos dos encontros mostram quem esteve na
+// sala; os anexos da vitrine trazem material comercial dos membros. Regras do
+// Storage são OR-adas, então um `allow read: if true` recursivo não pode ser
+// retirado por uma regra mais estreita depois — por isso não existe nenhum.
+// ============================================================================
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function memberDoc() {
+      return firestore.get(/databases/(default)/documents/members/$(request.auth.uid)).data;
+    }
+
+    function hasProfile() {
+      return request.auth != null
+        && firestore.exists(/databases/(default)/documents/members/$(request.auth.uid));
+    }
+
+    function isMember() {
+      return hasProfile() && memberDoc().approved == true && memberDoc().role >= 1;
+    }
+
+    function isAdmin() {
+      return hasProfile() && memberDoc().role >= 90;
+    }
+
+    function isValidImage() {
+      return request.resource.size < 8 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*');
+    }
+
+    // Mural: uma pasta por encontro.
+    match /photos/{eventId}/{fileName} {
+      allow read: if isMember() || isAdmin();
+      allow create: if isMember() && isValidImage();
+      allow delete: if isAdmin();
+    }
+
+    // Foto de perfil do membro.
+    match /members/{uid}/{fileName} {
+      allow read: if isMember() || isAdmin();
+      allow write: if request.auth != null && request.auth.uid == uid && isValidImage();
+    }
+
+    // Imagem de capa do serviço anunciado na vitrine.
+    match /services/{uid}/{fileName} {
+      allow read: if isMember() || isAdmin();
+      allow write: if request.auth != null && request.auth.uid == uid && isValidImage();
+    }
+
+    // Capa do evento na agenda.
+    match /events/{fileName} {
+      allow read: if isMember() || isAdmin();
+      allow write: if isAdmin() && isValidImage();
+    }
+
+    // Qualquer outro caminho: negado, inclusive leitura.
+  }
+}

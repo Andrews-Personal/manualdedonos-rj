@@ -1,0 +1,60 @@
+{
+  "name": "manualdedonos-rj",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Plataforma de membros da master class Manual de Donos — Empresários do Rio",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --cache --cache-location .eslintcache",
+    "lint:ci": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "typecheck": "tsc -b",
+    "emulators:start": "pnpm run func:build && firebase emulators:start --project ${FIREBASE_PROJECT:-demo-manualdedonos-rj} --import=./seed-data --export-on-exit=./seed-data",
+    "emulators:clean": "pnpm run func:build && firebase emulators:start --project ${FIREBASE_PROJECT:-demo-manualdedonos-rj}",
+    "seed:dev-data": "FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099 GCLOUD_PROJECT=${FIREBASE_PROJECT:-demo-manualdedonos-rj} node scripts/seed-dev-data.mjs",
+    "test:rules": "GCLOUD_PROJECT=${FIREBASE_PROJECT:-demo-manualdedonos-rj} node scripts/check-rules.mjs",
+    "func:build": "pnpm --prefix functions run build",
+    "func:deploy": "firebase deploy --only functions",
+    "deploy": "pnpm run build && firebase deploy",
+    "deploy:hosting": "pnpm run build && firebase deploy --only hosting",
+    "deploy:rules": "firebase deploy --only firestore:rules,firestore:indexes,storage"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.18",
+    "browser-image-compression": "^2.0.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "dayjs": "^1.11.13",
+    "firebase": "^12.6.0",
+    "lucide-react": "^0.561.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.9.1",
+    "sonner": "^2.0.7",
+    "tailwind-merge": "^3.4.0",
+    "tailwindcss": "^4.1.18",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^9.5.1",
+    "@eslint-react/eslint-plugin": "^5.19.1",
+    "@types/node": "^22.20.3",
+    "@types/react": "^19.1.13",
+    "@types/react-dom": "^19.1.9",
+    "@vitejs/plugin-react": "^5.0.2",
+    "eslint": "^9.35.0",
+    "eslint-plugin-format": "^1.0.2",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "firebase-admin": "^13.6.0",
+    "typescript": "~5.9.3",
+    "vite": "^7.1.6"
+  }
+}

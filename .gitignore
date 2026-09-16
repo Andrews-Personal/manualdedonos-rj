@@ -1,28 +1,69 @@
-# Firebase build and deployment files
-/firebase-debug.log
-/firebase-debug.*.log
-.firebaserc
+# ============================================================================
+# Manual de Donos — Empresários do Rio
+#
+# Regra geral: configuração do projeto é versionada (firebase.json, .firebaserc,
+# regras e índices — o deploy do GitHub Actions depende deles estarem no repo).
+# Segredo nenhum entra aqui.
+# ============================================================================
 
-# Firebase Hosting
-/firebase.json
-*.cache
-hosting/.cache
+# Dependências e build
+node_modules/
+functions/node_modules/
+dist/
+dist-ssr/
+functions/lib/
+*.tsbuildinfo
+.vite/
 
-# Firebase Functions
-/functions/node_modules/
-/functions/.env
-/functions/package-lock.json
+# Cache de ferramentas
+.eslintcache
+.pnpm-store/
+*.local
 
-# Firebase Emulators
-/firebase-*.zip
-/.firebase/
-/emulator-ui/
+# ----------------------------------------------------------------------------
+# Segredos — NUNCA versionar
+# ----------------------------------------------------------------------------
+# Chaves do frontend (VITE_*) e segredos das Cloud Functions (GEMINI_API_KEY).
+.env
+.env.*
+!.env.example
+functions/.env
+functions/.env.*
+!functions/.env.example
+
+# Service account do Firebase usado pelo GitHub Actions / scripts locais.
+# Se este arquivo vazar, quem tiver ele publica no seu projeto de produção.
+service-account.json
+*-firebase-adminsdk-*.json
+gha-creds-*.json
+
+# ----------------------------------------------------------------------------
+# Firebase — artefatos locais
+# ----------------------------------------------------------------------------
+.firebase/
+firebase-debug.log
+firebase-debug.*.log
+firestore-debug.log
+database-debug.log
+ui-debug.log
+pubsub-debug.log
+storage-debug.log
+firebase-export-*/
+seed-data/
 
 # Logs
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 
-# Environment files (local configs)
-/.env.*
+# Editores e sistema operacional
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo

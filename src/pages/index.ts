@@ -1,0 +1,13 @@
+export { Admin } from './admin';
+export { Agenda } from './agenda';
+export { Conexoes } from './conexoes';
+export { ConfirmPresence } from './confirm-presence';
+export { EventDetails } from './event-details';
+export { Home } from './home';
+export { Login } from './login';
+export { Membros } from './membros';
+export { Mural } from './mural';
+export { NotFound } from './not-found';
+export { PendingApproval } from './pending-approval';
+export { Perfil } from './perfil';
+export { Vitrine } from './vitrine';

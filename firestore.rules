@@ -1,0 +1,156 @@
+rules_version = '2';
+
+// ============================================================================
+// Manual de Donos — Empresários do Rio
+//
+// Modelo de acesso: o app inteiro é privado. Só existe conteúdo para quem está
+// autenticado E tem um perfil em `members/{uid}` com `approved == true`.
+// Cadastrar-se cria um perfil com role 0 (Visitante) e approved=false; quem
+// libera é um Admin. Isso é o que impede que qualquer pessoa com o link entre
+// no mural, na agenda e na lista de contatos do grupo.
+// ============================================================================
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------
+    // Funções auxiliares
+    // ------------------------------------------------------------------
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isAuthenticated() && request.auth.uid == uid;
+    }
+
+    function memberDoc() {
+      return get(/databases/$(database)/documents/members/$(request.auth.uid)).data;
+    }
+
+    function hasProfile() {
+      return isAuthenticated()
+        && exists(/databases/$(database)/documents/members/$(request.auth.uid));
+    }
+
+    // Membro liberado: perfil aprovado por um admin. role: 0 visitante,
+    // 1 membro, 90 admin, 99 super admin.
+    function isMember() {
+      return hasProfile() && memberDoc().approved == true && memberDoc().role >= 1;
+    }
+
+    function isAdmin() {
+      return hasProfile() && memberDoc().role >= 90;
+    }
+
+    function isSuperAdmin() {
+      return hasProfile() && memberDoc().role == 99;
+    }
+
+    // Campos que o próprio usuário nunca pode alterar em si mesmo — é por aqui
+    // que uma conta recém-criada tentaria virar admin.
+    function keepsPrivilegeFields() {
+      return !request.resource.data.diff(resource.data).affectedKeys()
+        .hasAny(['role', 'approved', 'createdAt']);
+    }
+
+    // ------------------------------------------------------------------
+    // members — perfil do empresário (dados de negócio + contato)
+    // ------------------------------------------------------------------
+    match /members/{uid} {
+      // O próprio dono sempre lê o seu perfil (mesmo pendente de aprovação),
+      // para a tela de "aguardando liberação" existir.
+      allow read: if isOwner(uid) || isMember() || isAdmin();
+
+      // Auto-cadastro: só o próprio uid, sempre como visitante não aprovado.
+      allow create: if isOwner(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.role == 0
+        && request.resource.data.approved == false;
+
+      allow update: if (isOwner(uid) && keepsPrivilegeFields()) || isAdmin();
+      allow delete: if isSuperAdmin();
+    }
+
+    // ------------------------------------------------------------------
+    // events — agenda dos encontros
+    // ------------------------------------------------------------------
+    match /events/{eventId} {
+      allow read: if isMember() || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // ------------------------------------------------------------------
+    // rsvps — confirmação de presença. ID determinístico `{eventId}_{uid}`,
+    // o que torna impossível um mesmo membro confirmar duas vezes o mesmo
+    // encontro (a contagem do anfitrião depende disso).
+    // ------------------------------------------------------------------
+    match /rsvps/{rsvpId} {
+      allow read: if isMember() || isAdmin();
+
+      allow create: if isMember()
+        && request.resource.data.uid == request.auth.uid
+        && rsvpId == request.resource.data.eventId + '_' + request.auth.uid
+        && request.resource.data.status in ['confirmado', 'talvez', 'ausente'];
+
+      allow update: if (isMember() && isOwner(resource.data.uid)
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.eventId == resource.data.eventId
+        && request.resource.data.status in ['confirmado', 'talvez', 'ausente'])
+        || isAdmin();
+
+      allow delete: if isOwner(resource.data.uid) || isAdmin();
+    }
+
+    // ------------------------------------------------------------------
+    // photos — mural de fotos dos encontros
+    // ------------------------------------------------------------------
+    match /photos/{photoId} {
+      allow read: if isMember() || isAdmin();
+
+      allow create: if isMember()
+        && request.resource.data.uploadedBy == request.auth.uid;
+
+      // Legenda pode ser corrigida pelo autor; moderação é do admin.
+      allow update: if (isOwner(resource.data.uploadedBy) && keepsPrivilegeFields()) || isAdmin();
+      allow delete: if isOwner(resource.data.uploadedBy) || isAdmin();
+    }
+
+    // ------------------------------------------------------------------
+    // services — vitrine de serviços entre membros
+    // ------------------------------------------------------------------
+    match /services/{serviceId} {
+      allow read: if isMember() || isAdmin();
+
+      allow create: if isMember()
+        && request.resource.data.ownerUid == request.auth.uid;
+
+      allow update: if isOwner(resource.data.ownerUid) || isAdmin();
+      allow delete: if isOwner(resource.data.ownerUid) || isAdmin();
+    }
+
+    // ------------------------------------------------------------------
+    // matches — sugestões de negócio geradas pelo Gemini.
+    // Escrita EXCLUSIVA da Cloud Function (Admin SDK ignora estas regras):
+    // se o cliente pudesse escrever aqui, o cache da IA viraria um campo livre.
+    // ------------------------------------------------------------------
+    match /matches/{uid} {
+      allow read: if isOwner(uid) || isAdmin();
+      allow write: if false;
+    }
+
+    // ------------------------------------------------------------------
+    // config — textos e parâmetros da master class (nome da turma, contatos)
+    // ------------------------------------------------------------------
+    match /config/{docId} {
+      allow read: if isMember() || isAdmin();
+      allow write: if isAdmin();
+    }
+
+    // Tudo que não foi declarado acima é negado.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -1,0 +1,66 @@
+name: Preview do Firebase Hosting (PR)
+
+# Publica cada PR em um canal temporário do Hosting, com URL própria e
+# validade de 7 dias. Revisar a tela é mais barato do que revisar o diff.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: firebase-preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  preview:
+    name: Canal de preview
+    runs-on: ubuntu-latest
+
+    # PR vindo de um fork não recebe os secrets do repositório — sem isto o
+    # job falharia em todo PR externo, com um erro que parece bug e não é.
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Instalar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: '10'
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Instalar dependências
+        run: pnpm install --frozen-lockfile
+
+      - name: Build do frontend
+        env:
+          VITE_FIREBASE_API_KEY: ${{ secrets.VITE_FIREBASE_API_KEY }}
+          VITE_FIREBASE_AUTH_DOMAIN: ${{ secrets.VITE_FIREBASE_AUTH_DOMAIN }}
+          VITE_FIREBASE_PROJECT_ID: ${{ secrets.VITE_FIREBASE_PROJECT_ID }}
+          VITE_FIREBASE_STORAGE_BUCKET: ${{ secrets.VITE_FIREBASE_STORAGE_BUCKET }}
+          VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.VITE_FIREBASE_MESSAGING_SENDER_ID }}
+          VITE_FIREBASE_APP_ID: ${{ secrets.VITE_FIREBASE_APP_ID }}
+          VITE_ENVIRONMENT: staging
+          VITE_APP_URL: ${{ secrets.VITE_APP_URL }}
+          VITE_FUNCTIONS_REGION: ${{ vars.FUNCTIONS_REGION || 'southamerica-east1' }}
+        run: pnpm run build
+
+      # Só hosting. Um preview NÃO publica regras nem functions: elas são
+      # únicas por projeto, e um canal de PR que as sobrescrevesse estaria
+      # alterando produção sem ninguém ter aprovado o merge.
+      - name: Publicar canal de preview
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ secrets.FIREBASE_PROJECT_ID }}
+          expires: 7d

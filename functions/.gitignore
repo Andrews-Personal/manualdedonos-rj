@@ -1,0 +1,10 @@
+node_modules/
+
+# Saída do tsc. A barra inicial ancora a regra na raiz de `functions/` — sem
+# ela, o padrão casaria com QUALQUER pasta chamada `lib`, inclusive
+# `functions/src/lib/`, que é código-fonte.
+/lib/
+
+.env
+.env.*
+!.env.example
