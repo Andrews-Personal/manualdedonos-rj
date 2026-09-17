@@ -138,8 +138,8 @@ export function RsvpPanel({ event, onSaved }: { event: AppEvent; onSaved?: () =>
                 Este encontro está
                 {' '}
                 {event.status}
-                {' '}
-                — as confirmações estão encerradas.
+                {'. '}
+                As confirmações estão encerradas.
               </p>
             )
           : (

@@ -73,7 +73,7 @@ export function Conexoes() {
     <div>
       <PageHeader
         title="Conexões de negócio"
-        description="O Gemini lê os perfis da turma e aponta onde há encaixe real entre as empresas — fornecimento, parceria, indicação ou cliente."
+        description="O Gemini lê os perfis da turma e aponta onde há encaixe real entre as empresas: fornecimento, parceria, indicação ou cliente."
       />
 
       {!profileReady && (

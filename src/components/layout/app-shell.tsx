@@ -21,7 +21,7 @@ function BrandMark() {
     <Link
       to={routes.home.path}
       className="flex items-center gap-3"
-      aria-label="Manual de Donos — Empresários do Rio"
+      aria-label="Manual de Donos, Empresários do Rio"
     >
       <span className="display-type flex h-10 w-10 items-center justify-center rounded-md bg-[var(--accent)] text-base text-[var(--accent-contrast)]">
         MD

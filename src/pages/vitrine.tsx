@@ -66,7 +66,7 @@ export function Vitrine() {
     <div>
       <PageHeader
         title="Vitrine de serviços"
-        description="O que cada empresa do grupo entrega — e a condição especial para quem é da turma."
+        description="O que cada empresa do grupo entrega e a condição especial para quem é da turma."
         actions={(
           <Button onClick={openNew}>
             <Plus className="h-4 w-4" />

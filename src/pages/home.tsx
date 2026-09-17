@@ -89,8 +89,8 @@ export function Home() {
       <section className="surface-card rounded-2xl p-6 sm:p-10">
         <h2 className="display-type accent-rule text-2xl sm:text-3xl">Acesso restrito aos participantes</h2>
         <p className="text-muted mt-4 max-w-2xl text-sm">
-          O conteúdo desta área — contatos, fotos dos encontros e dados das
-          empresas — é visível apenas para quem faz parte da turma. Cadastre-se
+          O conteúdo desta área (contatos, fotos dos encontros e dados das
+          empresas) é visível apenas para quem faz parte da turma. Cadastre-se
           com o e-mail que você usou na inscrição; a organização libera o acesso
           manualmente.
         </p>

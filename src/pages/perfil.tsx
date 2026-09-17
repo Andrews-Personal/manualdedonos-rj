@@ -194,7 +194,7 @@ export function Perfil() {
             <CardTitle className="text-base">Oportunidades</CardTitle>
             <p className="text-muted text-sm">
               É daqui que sai o cruzamento de negócios. Escreva com as palavras
-              que você usaria numa conversa — não em categorias genéricas.
+              que você usaria numa conversa, não em categorias genéricas.
             </p>
           </CardHeader>
           <CardContent className="flex flex-col gap-5">

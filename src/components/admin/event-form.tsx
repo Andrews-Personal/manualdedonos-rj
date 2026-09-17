@@ -97,7 +97,7 @@ export function EventForm({
         </FormField>
 
         <FormField label="Tema / módulo" htmlFor="topic">
-          <Input id="topic" value={draft.topic} onChange={e => update('topic', e.target.value)} placeholder="Ex.: Módulo 3 — Gestão de Caixa" />
+          <Input id="topic" value={draft.topic} onChange={e => update('topic', e.target.value)} placeholder="Ex.: Gestão de Caixa (Módulo 3)" />
         </FormField>
 
         <div className="grid gap-4 sm:grid-cols-3">
@@ -130,7 +130,7 @@ export function EventForm({
             id="locationName"
             value={draft.location.name}
             onChange={e => update('location', { ...draft.location, name: e.target.value })}
-            placeholder="Ex.: Sede do grupo — Botafogo"
+            placeholder="Ex.: Sede do grupo (Botafogo)"
           />
         </FormField>
 

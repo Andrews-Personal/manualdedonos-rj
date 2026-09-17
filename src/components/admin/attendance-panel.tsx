@@ -73,7 +73,7 @@ export function AttendancePanel() {
           {(events.data ?? []).map(event => (
             <option key={event.id} value={event.id}>
               {formatShortDate(event.startsAt)}
-              {' — '}
+              {' · '}
               {event.title}
             </option>
           ))}

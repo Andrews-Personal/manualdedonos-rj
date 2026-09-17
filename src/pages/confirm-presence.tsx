@@ -89,7 +89,7 @@ export function ConfirmPresence() {
               {next.location.name && (
                 <p className="flex items-center gap-2 text-sm">
                   <MapPin className="text-accent h-4 w-4" />
-                  {[next.location.name, next.location.address].filter(Boolean).join(' — ')}
+                  {[next.location.name, next.location.address].filter(Boolean).join(', ')}
                 </p>
               )}
 

@@ -71,7 +71,7 @@ export function EventDetails() {
                 <Detail
                   icon={MapPin}
                   label="Local"
-                  value={[current.location.name, current.location.address].filter(Boolean).join(' — ')}
+                  value={[current.location.name, current.location.address].filter(Boolean).join(', ')}
                   href={current.location.mapsUrl || undefined}
                 />
               )}
