@@ -119,7 +119,7 @@ export function RsvpPanel({ event, onSaved }: { event: AppEvent; onSaved?: () =>
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Users className="h-5 w-5 text-gold-500" />
+          <Users className="text-accent h-5 w-5" />
           Sua presença
         </CardTitle>
         {current && (
@@ -153,7 +153,7 @@ export function RsvpPanel({ event, onSaved }: { event: AppEvent; onSaved?: () =>
                       className={cn(
                         'flex items-center justify-center gap-2 rounded-lg border px-3 py-3 text-sm font-medium transition-colors',
                         status === option.status
-                          ? 'border-gold-500 bg-gold-500/10 text-gold-700 dark:text-gold-300'
+                          ? 'border-[var(--accent)] bg-[var(--accent)] text-[var(--accent-contrast)]'
                           : 'border-[var(--border-subtle)] text-muted hover:bg-[var(--surface-sunken)]',
                       )}
                       aria-pressed={status === option.status}

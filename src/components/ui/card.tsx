@@ -3,7 +3,7 @@ import type { HTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 export function Card({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
-  return <div className={cn('surface-card rounded-xl shadow-sm', className)} {...props} />;
+  return <div className={cn('surface-card rounded-xl shadow-md', className)} {...props} />;
 }
 
 export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElement>) {
@@ -11,7 +11,7 @@ export function CardHeader({ className, ...props }: HTMLAttributes<HTMLDivElemen
 }
 
 export function CardTitle({ className, ...props }: HTMLAttributes<HTMLHeadingElement>) {
-  return <h3 className={cn('text-lg font-semibold leading-tight', className)} {...props} />;
+  return <h3 className={cn('text-lg font-bold leading-tight tracking-[-0.01em]', className)} {...props} />;
 }
 
 export function CardDescription({ className, ...props }: HTMLAttributes<HTMLParagraphElement>) {

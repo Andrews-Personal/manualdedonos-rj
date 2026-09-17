@@ -92,7 +92,7 @@ export function Vitrine() {
 
       {(mine.data?.length ?? 0) > 0 && (
         <section className="mb-8">
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-muted">Meus anúncios</h2>
+          <h2 className="eyebrow text-muted mb-3">Meus anúncios</h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {(mine.data ?? []).map(service => (
               <ServiceCard key={service.id} service={service} onEdit={openEdit} onChanged={reloadAll} />

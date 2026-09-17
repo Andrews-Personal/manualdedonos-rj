@@ -35,7 +35,7 @@ export function PendingApproval() {
           </span>
 
           <div>
-            <h1 className="text-xl font-semibold">Cadastro em análise</h1>
+            <h1 className="display-type text-3xl">Cadastro em análise</h1>
             <p className="text-muted mt-2 text-sm">
               Olá
               {' '}

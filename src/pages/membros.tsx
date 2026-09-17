@@ -79,12 +79,12 @@ export function Membros() {
 
                 {member.company.name && (
                   <p className="flex items-center gap-2 text-sm">
-                    <Building2 className="h-4 w-4 shrink-0 text-gold-500" />
+                    <Building2 className="text-accent h-4 w-4 shrink-0" />
                     <span className="truncate">{member.company.name}</span>
                   </p>
                 )}
 
-                {member.company.segment && <Badge tone="gold" className="w-fit">{member.company.segment}</Badge>}
+                {member.company.segment && <Badge tone="accent" className="w-fit">{member.company.segment}</Badge>}
 
                 {member.bio && <p className="text-muted line-clamp-3 text-sm">{member.bio}</p>}
 

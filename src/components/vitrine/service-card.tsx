@@ -51,7 +51,7 @@ export function ServiceCard({
     <Card className="flex flex-col">
       <CardContent className="flex flex-1 flex-col gap-3 pt-5">
         <div className="flex flex-wrap items-center gap-2">
-          <Badge tone="gold">{service.category}</Badge>
+          <Badge tone="accent">{service.category}</Badge>
           {!service.active && <Badge tone="neutral">Oculto</Badge>}
         </div>
 
@@ -67,7 +67,7 @@ export function ServiceCard({
         )}
 
         {service.memberBenefit && (
-          <p className="rounded-lg bg-gold-500/10 px-3 py-2 text-xs font-medium text-gold-700 dark:text-gold-300">
+          <p className="text-accent rounded-lg bg-[var(--accent)]/15 px-3 py-2 text-xs font-medium">
             Para o grupo:
             {' '}
             {service.memberBenefit}

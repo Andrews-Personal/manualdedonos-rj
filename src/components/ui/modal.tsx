@@ -61,7 +61,7 @@ export function Modal({
         onClick={event => event.stopPropagation()}
       >
         <div className="flex items-start justify-between gap-4 border-b border-[var(--border-subtle)] p-5">
-          <h2 className="text-lg font-semibold">{title}</h2>
+          <h2 className="display-type text-xl">{title}</h2>
           <button
             type="button"
             onClick={onClose}

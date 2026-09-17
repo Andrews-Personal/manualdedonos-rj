@@ -22,7 +22,7 @@ function scoreTone(score: number) {
   if (score >= 75)
     return 'success' as const;
   if (score >= 50)
-    return 'gold' as const;
+    return 'accent' as const;
   return 'neutral' as const;
 }
 
@@ -100,7 +100,7 @@ export function Conexoes() {
       <Card className="mb-6">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
-            <Sparkles className="h-4 w-4 text-gold-500" />
+            <Sparkles className="text-accent h-4 w-4" />
             Nova análise
           </CardTitle>
         </CardHeader>
@@ -183,7 +183,7 @@ export function Conexoes() {
                           </Badge>
                         </div>
 
-                        {match.opportunityType && <Badge tone="gold" className="w-fit">{match.opportunityType}</Badge>}
+                        {match.opportunityType && <Badge tone="accent" className="w-fit">{match.opportunityType}</Badge>}
 
                         {match.rationale && <p className="text-sm leading-relaxed">{match.rationale}</p>}
 

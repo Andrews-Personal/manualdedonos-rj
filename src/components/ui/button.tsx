@@ -7,20 +7,23 @@ import { Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center gap-2 rounded-lg font-medium transition-colors disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap',
+  'display-type inline-flex items-center justify-center gap-2 rounded-lg tracking-[0.01em] '
+  + 'transition-colors disabled:pointer-events-none disabled:opacity-50 whitespace-nowrap',
   {
     variants: {
       variant: {
-        primary: 'bg-navy-900 text-white hover:bg-navy-800 dark:bg-gold-400 dark:text-navy-950 dark:hover:bg-gold-300',
-        accent: 'bg-gold-500 text-navy-950 hover:bg-gold-400',
-        outline: 'border border-[var(--border-subtle)] bg-transparent hover:bg-[var(--surface-sunken)]',
+        primary: 'bg-[var(--brand)] text-[var(--brand-contrast)] hover:bg-[var(--brand-hover)]',
+        accent: 'bg-[var(--accent)] text-[var(--accent-contrast)] hover:bg-[var(--accent-strong)]',
+        // Contorno grosso na cor do texto do contexto: sobre a parede verde
+        // sai branco, sobre o papel sai preto, sem variante por superfície.
+        outline: 'border-2 border-current bg-transparent hover:bg-[var(--surface-sunken)]',
         ghost: 'bg-transparent hover:bg-[var(--surface-sunken)]',
-        danger: 'bg-red-600 text-white hover:bg-red-700',
+        danger: 'bg-red-700 text-white hover:bg-red-800',
       },
       size: {
-        sm: 'h-9 px-3 text-sm',
+        sm: 'h-9 px-3.5 text-xs',
         md: 'h-11 px-5 text-sm',
-        lg: 'h-12 px-6 text-base',
+        lg: 'h-12 px-7 text-sm',
         icon: 'h-10 w-10',
       },
     },

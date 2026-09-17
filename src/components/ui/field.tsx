@@ -2,12 +2,15 @@ import type { InputHTMLAttributes, LabelHTMLAttributes, SelectHTMLAttributes, Te
 
 import { cn } from '@/lib/utils';
 
+// O campo fica no tom rebaixado do contexto, não no elevado: dentro de um
+// cartão branco um input branco sumiria, sobrando só a borda para marcá-lo.
 const controlClasses
-  = 'w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-raised)] px-3 py-2 text-sm '
-    + 'text-[var(--text-strong)] placeholder:text-[var(--text-muted)] disabled:opacity-60';
+  = 'w-full rounded-lg border border-[var(--border-subtle)] bg-[var(--surface-sunken)] px-3 py-2 text-sm '
+    + 'text-[var(--text-strong)] placeholder:text-[var(--text-muted)] transition-colors '
+    + 'focus:border-[var(--accent)] disabled:opacity-60';
 
 export function Label({ className, ...props }: LabelHTMLAttributes<HTMLLabelElement>) {
-  return <label className={cn('text-sm font-medium', className)} {...props} />;
+  return <label className={cn('eyebrow text-[var(--text-strong)]', className)} {...props} />;
 }
 
 export function Input({ className, ...props }: InputHTMLAttributes<HTMLInputElement>) {
@@ -34,7 +37,7 @@ export function FormField({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-2">
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
       {hint && <span className="text-muted text-xs">{hint}</span>}

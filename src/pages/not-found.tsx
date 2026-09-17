@@ -8,8 +8,8 @@ export function NotFound() {
 
   return (
     <div className="flex flex-col items-center gap-4 py-24 text-center">
-      <span className="text-5xl font-semibold text-gold-500">404</span>
-      <h1 className="text-xl font-semibold">Página não encontrada</h1>
+      <span className="display-type text-accent text-7xl">404</span>
+      <h1 className="display-type text-2xl">Página não encontrada</h1>
       <p className="text-muted max-w-sm text-sm">
         O endereço acessado não existe nesta área de membros.
       </p>

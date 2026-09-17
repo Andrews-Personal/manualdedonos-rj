@@ -1,5 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="14" fill="#0b1120"/>
-  <text x="32" y="43" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="700"
-        fill="#d4a034" text-anchor="middle">MD</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Manual de Donos">
+  <!-- Letras desenhadas em path, não em <text>: favicon não carrega webfont e
+       cada sistema substituiria a Archivo Black por uma fonte diferente. -->
+  <rect width="64" height="64" rx="6" fill="#eac94e"/>
+  <path fill="#111a12" d="M8 46V18h7l4 11 4-11h7v28h-6V30l-4 10h-2l-4-10v16z"/>
+  <path fill="#111a12" fill-rule="evenodd" d="M34 18h12a14 14 0 0 1 0 28H34zm7 7v14h5a7 7 0 0 0 0-14z"/>
 </svg>

@@ -19,8 +19,10 @@ export function Avatar({
   className?: string;
 }) {
   const base = cn(
-    'flex shrink-0 items-center justify-center overflow-hidden rounded-full '
-    + 'bg-navy-900 text-white dark:bg-gold-400 dark:text-navy-950 h-10 w-10 text-sm font-semibold',
+    // Mostarda em qualquer contexto: o disco precisa aparecer tanto sobre o
+    // papel branco quanto sobre a barra preta do cabeçalho.
+    'display-type flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden '
+    + 'rounded-full bg-[var(--accent)] text-sm text-[var(--accent-contrast)]',
     className,
   );
 

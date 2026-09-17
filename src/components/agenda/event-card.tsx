@@ -37,7 +37,7 @@ export function EventCard({ event }: { event: AppEvent }) {
           <Badge tone={STATUS_TONE[event.status]}>
             {event.status === 'agendado' && upcoming ? 'Próximo' : event.status}
           </Badge>
-          {event.topic && <Badge tone="gold">{event.topic}</Badge>}
+          {event.topic && <Badge tone="accent">{event.topic}</Badge>}
         </div>
 
         <h3 className="text-base font-semibold leading-snug">{event.title}</h3>

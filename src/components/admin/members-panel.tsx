@@ -139,7 +139,7 @@ export function MembersPanel() {
   return (
     <div className="flex flex-col gap-6">
       <section>
-        <h3 className="text-muted mb-3 flex items-center gap-2 text-sm font-semibold uppercase tracking-wide">
+        <h3 className="eyebrow text-muted mb-3 flex items-center gap-2">
           <ShieldCheck className="h-4 w-4" />
           Aguardando liberação (
           {pending.length}
@@ -152,7 +152,7 @@ export function MembersPanel() {
       </section>
 
       <section>
-        <h3 className="text-muted mb-3 text-sm font-semibold uppercase tracking-wide">
+        <h3 className="eyebrow text-muted mb-3">
           Membros liberados (
           {active.length}
           )

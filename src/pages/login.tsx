@@ -24,7 +24,7 @@ export function Login() {
   const location = useLocation();
 
   if (loading)
-    return <Loader2 className="mx-auto mt-24 h-8 w-8 animate-spin text-gold-500" />;
+    return <Loader2 className="text-accent mx-auto mt-24 h-8 w-8 animate-spin" />;
 
   // Já logado: manda para onde ele tentava ir, ou para a agenda.
   if (isAuthenticated) {
@@ -92,12 +92,12 @@ export function Login() {
   return (
     <div className="mx-auto flex w-full max-w-md flex-col gap-6 py-8">
       <div className="text-center">
-        <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gold-500 text-navy-950">
+        <span className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-lg bg-[var(--accent)] text-[var(--accent-contrast)]">
           <LockKeyhole className="h-6 w-6" />
         </span>
-        <h1 className="text-2xl font-semibold">Área de membros</h1>
-        <p className="text-muted mt-1 text-sm">
-          Manual de Donos — Empresários do Rio
+        <h1 className="display-type text-4xl">Área de membros</h1>
+        <p className="eyebrow text-accent mt-3">
+          Manual de Donos · Empresários do Rio
         </p>
       </div>
 
@@ -110,8 +110,10 @@ export function Login() {
                 type="button"
                 onClick={() => setMode(option)}
                 className={cn(
-                  'rounded-md py-2 text-sm font-medium capitalize transition-colors',
-                  mode === option ? 'bg-[var(--surface-raised)] shadow-sm' : 'text-muted',
+                  'rounded-sm py-2 text-xs font-bold uppercase tracking-[0.08em] transition-colors',
+                  mode === option
+                    ? 'bg-[var(--accent)] text-[var(--accent-contrast)] shadow-sm'
+                    : 'text-muted hover:text-[var(--text-strong)]',
                 )}
               >
                 {option === 'entrar' ? 'Entrar' : 'Criar conta'}

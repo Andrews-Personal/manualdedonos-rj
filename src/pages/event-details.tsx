@@ -55,9 +55,9 @@ export function EventDetails() {
           <div>
             <div className="mb-3 flex flex-wrap gap-2">
               <Badge tone={current.status === 'cancelado' ? 'danger' : 'brand'}>{current.status}</Badge>
-              {current.topic && <Badge tone="gold">{current.topic}</Badge>}
+              {current.topic && <Badge tone="accent">{current.topic}</Badge>}
             </div>
-            <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{current.title}</h1>
+            <h1 className="display-type text-3xl sm:text-4xl">{current.title}</h1>
             {current.description && (
               <p className="text-muted mt-3 whitespace-pre-line text-sm leading-relaxed">{current.description}</p>
             )}
@@ -80,7 +80,7 @@ export function EventDetails() {
           </Card>
 
           <section>
-            <h2 className="mb-3 text-lg font-semibold">Fotos deste encontro</h2>
+            <h2 className="display-type mb-3 text-xl">Fotos deste encontro</h2>
             {photos.loading && <Spinner label="Carregando fotos…" />}
             {!photos.loading && photos.error && <ResourceError onRetry={photos.reload} />}
             {!photos.loading && !photos.error && (
@@ -95,7 +95,7 @@ export function EventDetails() {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-base">
-                <Users className="h-4 w-4 text-gold-500" />
+                <Users className="text-accent h-4 w-4" />
                 Confirmações
               </CardTitle>
             </CardHeader>
@@ -163,7 +163,7 @@ function Detail({
 }) {
   return (
     <div className="flex items-start gap-3">
-      <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gold-500" />
+      <Icon className="text-accent mt-0.5 h-4 w-4 shrink-0" />
       <div>
         <p className="text-muted text-xs uppercase tracking-wide">{label}</p>
         {href
@@ -181,7 +181,7 @@ function Detail({
 function Stat({ label, value }: { label: string; value: number }) {
   return (
     <div className="rounded-lg bg-[var(--surface-sunken)] px-2 py-3">
-      <p className="text-xl font-semibold">{value}</p>
+      <p className="display-type text-2xl">{value}</p>
       <p className="text-muted text-[11px] uppercase tracking-wide">{label}</p>
     </div>
   );

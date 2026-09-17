@@ -181,6 +181,32 @@ Firestore.
 `:root`, com tema escuro). Componentes usam as classes Tailwind geradas ou
 `var(--surface-raised)` e afins — nunca um hex solto.
 
+**Três contextos de superfície, e o componente não escolhe entre eles.** O
+sistema é de cartaz: parede verde (`forest`), papel branco por cima, tipo preto
+pesado e mostarda de acento. A raiz vale para quem está sobre a parede;
+`.surface-card` vale para o papel; `.surface-ink` para a barra preta do
+cabeçalho e do rodapé. Cada um **redeclara** `--text-strong`, `--text-muted`,
+`--border-subtle` e `--surface-sunken`, e os filhos herdam. É por isso que
+`text-muted` e `bg-[var(--surface-sunken)]` funcionam iguais nos três lugares
+sem variante por fundo — e por isso nada de cor de texto fixa dentro de um
+cartão. Quem põe papel branco no meio da parede por conta própria (um chip
+ativo, por exemplo) fica com o texto branco do contexto de fora: use o acento
+em vez de inventar a exceção.
+
+**Duas fontes, dois papéis.** `--font-sans` (Archivo) é texto e interface;
+`--font-display` (Archivo Black) é título, botão, etiqueta e a assinatura do
+cabeçalho, sempre via `.display-type` (caixa alta, entreletra fechada) ou
+`.eyebrow` (etiqueta miúda espaçada). Archivo Black só existe no peso 400 —
+`font-synthesis-weight: none` está ligado no `body` para que ninguém engorde o
+traço por engano; não combine `font-bold` com `display-type`. Brezo, a
+referência do desenho, é licenciada e não entra no repositório.
+
+**Contraste do acento muda com o fundo.** `--accent` é o bloco de mostarda;
+`--accent-text` é a mesma mostarda ajustada para ser lida — clara sobre o verde
+e sobre o preto, `mustard-700` sobre o papel branco. Texto e ícone em mostarda
+usam `text-accent`, nunca `text-mustard-400` direto, ou o tom certo de um fundo
+vira ilegível no outro.
+
 ## Rotas
 
 | Rota                    | Acesso      | Tela                          |

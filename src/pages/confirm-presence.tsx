@@ -79,16 +79,16 @@ export function ConfirmPresence() {
 
             <CardContent className="flex flex-col gap-3">
               <p className="flex items-center gap-2 text-sm capitalize">
-                <CalendarDays className="h-4 w-4 text-gold-500" />
+                <CalendarDays className="text-accent h-4 w-4" />
                 {formatFullDate(next.startsAt)}
               </p>
               <p className="flex items-center gap-2 text-sm">
-                <Clock className="h-4 w-4 text-gold-500" />
+                <Clock className="text-accent h-4 w-4" />
                 {formatTimeRange(next.startsAt, next.durationMinutes)}
               </p>
               {next.location.name && (
                 <p className="flex items-center gap-2 text-sm">
-                  <MapPin className="h-4 w-4 text-gold-500" />
+                  <MapPin className="text-accent h-4 w-4" />
                   {[next.location.name, next.location.address].filter(Boolean).join(' — ')}
                 </p>
               )}

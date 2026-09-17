@@ -63,7 +63,7 @@ export function EventsPanel() {
                 <Badge tone={event.status === 'cancelado' ? 'danger' : event.status === 'realizado' ? 'neutral' : 'brand'}>
                   {event.status}
                 </Badge>
-                {event.topic && <Badge tone="gold">{event.topic}</Badge>}
+                {event.topic && <Badge tone="accent">{event.topic}</Badge>}
               </div>
               <h3 className="truncate text-sm font-semibold">{event.title}</h3>
               <p className="text-muted text-xs">

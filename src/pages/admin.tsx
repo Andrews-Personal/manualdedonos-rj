@@ -32,8 +32,10 @@ export function Admin() {
             type="button"
             onClick={() => setPanel(item.key)}
             className={cn(
-              'rounded-md px-4 py-2 text-sm font-medium transition-colors',
-              panel === item.key ? 'bg-[var(--surface-raised)] shadow-sm' : 'text-muted',
+              'rounded-md px-4 py-2 text-xs font-bold uppercase tracking-[0.08em] transition-colors',
+              panel === item.key
+                ? 'bg-[var(--accent)] text-[var(--accent-contrast)] shadow-sm'
+                : 'text-muted hover:text-[var(--text-strong)]',
             )}
           >
             {item.label}

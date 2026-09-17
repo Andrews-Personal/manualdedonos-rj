@@ -29,7 +29,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
     return (
       <div className="flex flex-col items-center gap-4 py-24 text-center">
-        <h1 className="text-xl font-semibold">Algo deu errado</h1>
+        <h1 className="display-type text-3xl">Algo deu errado</h1>
         <p className="text-muted max-w-md text-sm">
           A página encontrou um erro inesperado. Recarregar costuma resolver; se
           persistir, avise a organização.

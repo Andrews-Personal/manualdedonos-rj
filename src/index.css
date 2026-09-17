@@ -2,73 +2,194 @@
 
 /* ==========================================================================
    Manual de Donos — Empresários do Rio
-   Paleta institucional: azul-marinho profundo (autoridade) + dourado (o
-   acento da master class). Tokens declarados uma vez e redefinidos no tema
-   escuro; nenhum componente escreve cor crua.
+   Sistema visual "cartaz": parede verde, cartaz de papel, tipo preto pesado
+   e mostarda como acento. Inspirado na família de display Brezo — estrutura
+   sólida, linhas limpas, proporções confiantes.
+
+   Três contextos de superfície, e só eles definem cor de texto e de borda:
+     (raiz)         → sobre a parede verde
+     .surface-card  → sobre o papel do cartaz
+     .surface-ink   → sobre a barra preta (cabeçalho, rodapé)
+
+   Cada contexto redeclara --text-strong / --text-muted / --border-subtle /
+   --surface-sunken, e tudo que está dentro herda os valores certos. É por
+   isso que nenhum componente precisa saber em que fundo ele caiu.
    ========================================================================== */
 
+/* O `dark:` do Tailwind passa a seguir a mesma regra das variáveis abaixo:
+   preferência do sistema, a menos que data-theme diga o contrário. Sem isso
+   as duas metades do tema divergiriam — variáveis escuras com utilitários
+   claros na mesma tela. */
+@custom-variant dark {
+  @media (prefers-color-scheme: dark) {
+    &:where(:root:not([data-theme='light']), :root:not([data-theme='light']) *) {
+      @slot;
+    }
+  }
+
+  &:where([data-theme='dark'], [data-theme='dark'] *) {
+    @slot;
+  }
+}
+
 @theme {
-  --color-navy-50: #f2f5fb;
-  --color-navy-100: #e3e9f6;
-  --color-navy-200: #c6d3ed;
-  --color-navy-300: #97addd;
-  --color-navy-400: #6280c7;
-  --color-navy-500: #4060b0;
-  --color-navy-600: #2f4894;
-  --color-navy-700: #283a78;
-  --color-navy-800: #223260;
-  --color-navy-900: #0f1b3d;
-  --color-navy-950: #0b1120;
+  /* Verde da parede. O 600 é o tom institucional: fundo de página precisa
+     carregar texto branco em AA (5.9:1), e os tons acima disso não carregam. */
+  --color-forest-50: #f3f6f0;
+  --color-forest-100: #dfece0;
+  --color-forest-200: #c1d9c2;
+  --color-forest-300: #99bd99;
+  --color-forest-400: #6d9c6c;
+  --color-forest-500: #55854f;
+  --color-forest-600: #446e42;
+  --color-forest-700: #375936;
+  --color-forest-800: #2c462c;
+  --color-forest-900: #1e3220;
+  --color-forest-950: #0f1a11;
 
-  --color-gold-300: #f5d68a;
-  --color-gold-400: #e7bd5c;
-  --color-gold-500: #d4a034;
-  --color-gold-600: #b3822a;
-  --color-gold-700: #8c6520;
+  /* Mostarda do cartaz. O 400 é o amarelo dos blocos; do 600 para baixo é
+     o que pode virar texto sobre papel branco. */
+  --color-mustard-100: #fdf6dc;
+  --color-mustard-200: #f9e8ab;
+  --color-mustard-300: #f2d97a;
+  --color-mustard-400: #eac94e;
+  --color-mustard-500: #d9b232;
+  --color-mustard-600: #b48f24;
+  --color-mustard-700: #8a6d1c;
+  --color-mustard-800: #654f16;
 
-  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans: 'Archivo', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Brezo é licenciada; Archivo Black é a parente livre mais próxima — mesma
+     grotesca pesada de terminais retos e contraformas quadradas. Só existe no
+     peso 400: quem usar font-display usa font-normal junto. */
+  --font-display: 'Archivo Black', 'Archivo', ui-sans-serif, system-ui, sans-serif;
+
+  /* Cantos quase retos. O cartaz é um retângulo; o arredondado de 12px que
+     vinha por padrão amolecia justamente o que a tipografia endurece. */
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 10px;
+  --radius-3xl: 14px;
+
+  /* Sombra de papel na parede: verde-escura, não cinza. */
+  --shadow-2xs: 0 1px 1px rgb(15 26 17 / 0.06);
+  --shadow-xs: 0 1px 2px rgb(15 26 17 / 0.1);
+  --shadow-sm: 0 1px 2px rgb(15 26 17 / 0.1), 0 3px 8px rgb(15 26 17 / 0.07);
+  --shadow-md: 0 3px 6px rgb(15 26 17 / 0.12), 0 10px 24px rgb(15 26 17 / 0.1);
+  --shadow-lg: 0 6px 12px rgb(15 26 17 / 0.14), 0 20px 40px rgb(15 26 17 / 0.12);
+  --shadow-xl: 0 10px 20px rgb(15 26 17 / 0.16), 0 32px 64px rgb(15 26 17 / 0.14);
 }
 
 :root {
-  --surface: #f7f8fb;
-  --surface-raised: #ffffff;
-  --surface-sunken: #eef1f7;
-  --border-subtle: #dfe4ee;
-  --text-strong: #0f1b3d;
-  --text-muted: #5a6478;
-  --brand: #0f1b3d;
-  --brand-contrast: #ffffff;
-  --accent: #b3822a;
+  /* parede */
+  --canvas: #446e42;
+  --canvas-text: #ffffff;
+  --canvas-text-muted: #d7e7d4;
+  --canvas-sunken: #375936;
+  --canvas-border: #5f8b5c;
+
+  /* papel */
+  --paper: #ffffff;
+  --paper-text: #111a12;
+  --paper-text-muted: #5d6a5c;
+  --paper-sunken: #f3f0e6;
+  --paper-border: #e2ddcd;
+
+  /* barra preta */
+  --night: #111a12;
+  --night-raised: #1c2a1d;
+  --night-sunken: #26382a;
+  --night-border: #2e4431;
+  --night-text: #f8f6ee;
+  --night-text-muted: #a9bfa6;
+
+  /* acento e ação */
+  --accent: #eac94e;
+  --accent-strong: #d9b232;
+  --accent-contrast: #111a12;
+  /* Texto/ícone em mostarda muda de tom conforme o fundo. Sobre o verde o
+     300 fica em 4.2:1 — abaixo de AA para os 11px da etiqueta —, então o
+     contexto da parede usa um tom mais claro (4.6:1). No papel branco só o
+     700 chega lá (4.9:1); é o surface-card que troca. */
+  --accent-text: #f6e29a;
+  --brand: #111a12;
+  --brand-hover: #26382a;
+  --brand-contrast: #f8f6ee;
+
+  /* contexto padrão: sobre a parede */
+  --surface: var(--canvas);
+  --surface-raised: var(--paper);
+  --surface-sunken: var(--canvas-sunken);
+  --border-subtle: var(--canvas-border);
+  --text-strong: var(--canvas-text);
+  --text-muted: var(--canvas-text-muted);
 
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
-    --surface: #0b1120;
-    --surface-raised: #131c31;
-    --surface-sunken: #0a0f1c;
-    --border-subtle: #22304d;
-    --text-strong: #eef2fa;
-    --text-muted: #9aa7c0;
-    --brand: #e7bd5c;
-    --brand-contrast: #0b1120;
-    --accent: #e7bd5c;
+    --canvas: #0f1a11;
+    --canvas-text: #f3f6f0;
+    --canvas-text-muted: #9db39b;
+    --canvas-sunken: #16241a;
+    --canvas-border: #24382a;
+
+    --paper: #17241a;
+    --paper-text: #f3f6f0;
+    --paper-text-muted: #9db39b;
+    --paper-sunken: #1f3123;
+    --paper-border: #2c4231;
+
+    --night: #0b120d;
+    --night-raised: #16241a;
+    --night-sunken: #1f3123;
+    --night-border: #2a3f2e;
+    --night-text: #f3f6f0;
+    --night-text-muted: #9db39b;
+
+    --accent: #eac94e;
+    --accent-strong: #f2d97a;
+    --accent-contrast: #111a12;
+    --accent-text: #f2d97a;
+    --brand: #eac94e;
+    --brand-hover: #f2d97a;
+    --brand-contrast: #111a12;
 
     color-scheme: dark;
   }
 }
 
 :root[data-theme='dark'] {
-  --surface: #0b1120;
-  --surface-raised: #131c31;
-  --surface-sunken: #0a0f1c;
-  --border-subtle: #22304d;
-  --text-strong: #eef2fa;
-  --text-muted: #9aa7c0;
-  --brand: #e7bd5c;
-  --brand-contrast: #0b1120;
-  --accent: #e7bd5c;
+  --canvas: #0f1a11;
+  --canvas-text: #f3f6f0;
+  --canvas-text-muted: #9db39b;
+  --canvas-sunken: #16241a;
+  --canvas-border: #24382a;
+
+  --paper: #17241a;
+  --paper-text: #f3f6f0;
+  --paper-text-muted: #9db39b;
+  --paper-sunken: #1f3123;
+  --paper-border: #2c4231;
+
+  --night: #0b120d;
+  --night-raised: #16241a;
+  --night-sunken: #1f3123;
+  --night-border: #2a3f2e;
+  --night-text: #f3f6f0;
+  --night-text-muted: #9db39b;
+
+  --accent: #eac94e;
+  --accent-strong: #f2d97a;
+  --accent-contrast: #111a12;
+  --accent-text: #f2d97a;
+  --brand: #eac94e;
+  --brand-hover: #f2d97a;
+  --brand-contrast: #111a12;
 
   color-scheme: dark;
 }
@@ -89,6 +210,14 @@ body {
   color: var(--text-strong);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
+  /* Archivo Black só tem um peso. Sem isto o navegador engorda o traço por
+     conta própria quando alguém escreve font-bold em cima do display. */
+  font-synthesis-weight: none;
+}
+
+::selection {
+  background-color: var(--accent);
+  color: var(--accent-contrast);
 }
 
 /* Foco visível em tudo que recebe teclado — a área é usada em celular e em
@@ -98,11 +227,76 @@ body {
   outline-offset: 2px;
 }
 
+/* --------------------------------------------------------------------------
+   Contextos de superfície
+   -------------------------------------------------------------------------- */
+
 @utility surface-card {
-  background-color: var(--surface-raised);
-  border: 1px solid var(--border-subtle);
+  --surface-raised: var(--paper);
+  --surface-sunken: var(--paper-sunken);
+  --border-subtle: var(--paper-border);
+  --text-strong: var(--paper-text);
+  --text-muted: var(--paper-text-muted);
+  --accent-text: var(--color-mustard-700);
+
+  background-color: var(--paper);
+  color: var(--paper-text);
+  border: 1px solid var(--paper-border);
+}
+
+@utility surface-ink {
+  --surface-raised: var(--night-raised);
+  --surface-sunken: var(--night-sunken);
+  --border-subtle: var(--night-border);
+  --text-strong: var(--night-text);
+  --text-muted: var(--night-text-muted);
+  --accent-text: var(--color-mustard-300);
+
+  background-color: var(--night);
+  color: var(--night-text);
 }
 
 @utility text-muted {
   color: var(--text-muted);
+}
+
+@utility text-accent {
+  color: var(--accent-text);
+}
+
+/* --------------------------------------------------------------------------
+   Tipografia de display
+   -------------------------------------------------------------------------- */
+
+/* Título de cartaz: caixa alta, entreletra fechada, entrelinha curta. O
+   tamanho vem das classes text-* de quem usa. */
+@utility display-type {
+  font-family: var(--font-display);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+/* Etiqueta miúda em versalete espaçado — a linha "DESIGNED BY" do cartaz. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.6875rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+}
+
+/* Barra de mostarda sob um título. Curta de propósito: marca o início do
+   bloco sem virar régua de separação. */
+@utility accent-rule {
+  &::after {
+    content: '';
+    display: block;
+    width: 3rem;
+    height: 0.375rem;
+    margin-top: 0.75rem;
+    background-color: var(--accent);
+  }
 }
