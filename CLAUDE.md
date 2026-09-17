@@ -23,13 +23,14 @@ src/
 ├── components/
 │   ├── admin/             # encontros, membros, presenças
 │   ├── agenda/            # card de encontro, painel de presença
+│   ├── home/              # painel da tela inicial de quem é da turma
 │   ├── layout/            # cabeçalho, menu, rodapé
 │   ├── mural/             # grade e envio de fotos
 │   ├── ui/                # primitivos: botão, card, campo, modal, estados
 │   └── vitrine/           # card e formulário de serviço
 ├── config/                # env (Zod), Firebase, dayjs, locale
 ├── context/               # sessão + perfil do membro
-├── helpers/               # datas, Firestore, erros
+├── helpers/               # datas, Firestore, erros, busca em texto
 ├── hooks/                 # useUser, useAsyncResource
 ├── libs/authorization/    # singleton do Firebase Auth
 ├── pages/                 # uma tela por rota
@@ -211,7 +212,7 @@ vira ilegível no outro.
 
 | Rota                    | Acesso      | Tela                          |
 | ----------------------- | ----------- | ----------------------------- |
-| `/`                     | pública     | apresentação                  |
+| `/`                     | pública     | apresentação ou painel da turma |
 | `/entrar`               | pública     | login e cadastro              |
 | `/aguardando-liberacao` | autenticado | espera pela aprovação         |
 | `/agenda`               | membro      | lista de encontros            |

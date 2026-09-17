@@ -73,6 +73,30 @@ export const eventService = {
     return parseAll(snapshot.docs).filter(event => event.startsAt >= boundary);
   },
 
+  /**
+   * O encontro mais recente que já aconteceu — é o mural dele que a tela
+   * inicial mostra.
+   *
+   * O corte é o mesmo `todayStartsAtBoundary()` do `listUpcoming`, e não o
+   * instante atual: no dia do encontro ele é "o próximo", nunca "o último".
+   * Sem essa fronteira compartilhada, os dois blocos da tela inicial
+   * mostrariam o mesmo encontro durante o dia inteiro.
+   *
+   * Lê alguns documentos em vez de um: o cancelado não vale como último
+   * encontro, e filtrar `status` no servidor exigiria um índice composto só
+   * para isto.
+   */
+  async getLastHeldEvent(scanned = 5): Promise<AppEvent | null> {
+    const snapshot = await getDocs(query(
+      eventsCollection,
+      where('startsAt', '<', todayStartsAtBoundary()),
+      orderBy('startsAt', 'desc'),
+      limit(scanned),
+    ));
+
+    return parseAll(snapshot.docs).find(event => event.status !== 'cancelado') ?? null;
+  },
+
   /** O próximo encontro — é ele que a tela de confirmação de presença abre. */
   async getNextEvent(): Promise<AppEvent | null> {
     const upcoming = await this.listUpcoming(1);
